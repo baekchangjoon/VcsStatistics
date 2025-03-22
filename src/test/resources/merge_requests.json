@@ -1,0 +1,12 @@
+[
+  {
+    "userEmail": "user1@example.com",
+    "mrId": 101,
+    "changedLines": 120
+  },
+  {
+    "userEmail": "user2@example.com",
+    "mrId": 102,
+    "changedLines": 80
+  }
+]

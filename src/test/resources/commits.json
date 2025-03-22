@@ -1,0 +1,12 @@
+[
+  {
+    "userEmail": "user1@example.com",
+    "changedLines": 50,
+    "message": "Refactor user service"
+  },
+  {
+    "userEmail": "user2@example.com",
+    "changedLines": 200,
+    "message": "Implement new feature"
+  }
+]
