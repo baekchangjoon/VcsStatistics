@@ -1,22 +1,29 @@
 package com.example.vcsstatistics;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
 
+@EnabledIfSystemProperty(named = "testcontainers.enabled", matches = "true")
 public class IntegrationTest {
 
     @Test
     public void testFullIntegration() {
-        GitLabClient client = new GitLabClient("TOKEN", "https://gitlab.example.com/api/v4");
+        // Testcontainers GitLab URL과 토큰을 사용
+        String gitlabUrl = System.getProperty("gitlab.url", "http://localhost:8080");
+        String accessToken = System.getProperty("gitlab.token", "glpat-test-token");
+        String projectId = System.getProperty("gitlab.project.id", "1");
+        
+        GitLabClient client = new GitLabClient(accessToken, gitlabUrl + "/api/v4");
         StatsService stats = new StatsService(client);
         RankService rank = new RankService();
         OpenAiClient openAi = new OpenAiClient("OPENAI_KEY");
 
         List<String> users = Arrays.asList("user1@example.com","user2@example.com");
-        Map<String, UserStat> statMap = stats.generateStats("123", "2023-01-01", "2023-12-31", users);
+        Map<String, UserStat> statMap = stats.generateStats(projectId, "2023-01-01", "2023-12-31", users);
         // API 호출 실패 시에도 사용자별 통계가 생성되므로 테스트 통과
         assertTrue(statMap.size() >= 0);
 

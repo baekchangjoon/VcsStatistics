@@ -31,14 +31,12 @@ jobs:
     - name: Build and test with Maven
       run: |
         mvn clean compile test-compile
-        mvn test -Dtest=!GitLabTestcontainersTest
+        mvn test -Dtest=!GitLabTestcontainersTest -Dtestcontainers.enabled=false
         mvn surefire-report:report-only
         
     - name: Generate comprehensive test report
       run: |
         mvn surefire-report:report
-        mvn site:site
-        mvn site:stage
         
     - name: Create test summary
       if: always()
@@ -51,11 +49,6 @@ jobs:
           find target/surefire-reports -name "*.txt" -o -name "*.xml" | while read file; do
             echo "- $(basename "$file")" >> $GITHUB_STEP_SUMMARY
           done
-        fi
-        
-        if [ -d "target/site" ]; then
-          echo "### Site Reports Generated:" >> $GITHUB_STEP_SUMMARY
-          echo "- Maven Site Report" >> $GITHUB_STEP_SUMMARY
         fi
         
         if [ -d "target/site/jacoco" ]; then
@@ -74,7 +67,6 @@ jobs:
         path: |
           target/surefire-reports/
           target/surefire-report/
-          target/site/
         retention-days: 30
         
     - name: Upload code coverage
