@@ -25,6 +25,10 @@ public class UserStat {
     public int getReviewCommentCount() { return reviewCommentCount; }
     public int getReviewCommentChars() { return reviewCommentChars; }
     public int getTotalChangedLines() { return totalChangedLines; }
+    
+    // 추가된 메서드들
+    public int getTotalLines() { return totalChangedLines; }
+    public int getTotalReviewCommentChars() { return reviewCommentChars; }
 
     @Override
     public String toString() {
