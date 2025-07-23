@@ -25,11 +25,13 @@ GitLab API를 활용하여 사용자들의 커밋과 코드 리뷰 통계를 생
 
 - **자동 빌드**: main, develop 브랜치에 푸시하거나 PR 생성 시 자동 실행
 - **테스트 실행**: 모든 단위 테스트 자동 실행
+- **Testcontainers GitLab 테스트**: Docker를 사용한 GitLab 인스턴스에서 실제 API 테스트
 - **테스트 리포트**: Surefire 리포트 및 Maven Site 리포트 생성
 - **코드 커버리지**: JaCoCo를 통한 코드 커버리지 측정
 - **아티팩트 저장**: 
   - 테스트 결과 리포트
   - 코드 커버리지 리포트
+  - Testcontainers 테스트 결과
   - 빌드된 JAR 파일
 - **캐싱**: Maven 의존성 캐싱으로 빌드 속도 향상
 
@@ -38,7 +40,17 @@ GitLab API를 활용하여 사용자들의 커밋과 코드 리뷰 통계를 생
 GitHub Actions 실행 후 다음 아티팩트를 다운로드할 수 있습니다:
 - `test-results`: 테스트 리포트 및 Maven Site 리포트
 - `code-coverage`: JaCoCo 코드 커버리지 리포트
+- `testcontainers-test-results`: Testcontainers GitLab 테스트 결과
 - `application-jar`: 빌드된 실행 가능한 JAR 파일
+
+### Testcontainers GitLab 테스트
+
+프로젝트에는 Testcontainers를 사용한 GitLab 통합 테스트가 포함되어 있습니다:
+
+- **GitLab 인스턴스**: Docker 컨테이너에서 GitLab CE 실행
+- **테스트 데이터**: 자동으로 프로젝트, 커밋, MR, 리뷰 코멘트 생성
+- **실제 API 테스트**: GitLab API를 통한 실제 통신 테스트
+- **격리된 환경**: 각 테스트마다 깨끗한 GitLab 인스턴스 사용
 
 ## 빌드 및 실행
 

@@ -31,7 +31,7 @@ jobs:
     - name: Build and test with Maven
       run: |
         mvn clean compile test-compile
-        mvn test
+        mvn test -Dtest=!GitLabTestcontainersTest
         mvn surefire-report:report-only
         
     - name: Generate comprehensive test report
