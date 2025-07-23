@@ -7,36 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
 
+/**
+ * IntegrationTest는 GitLabTestcontainersTest.testFullIntegrationWithTestcontainers()로 대체되었습니다.
+ * Testcontainers 환경에서만 실행되도록 GitLabTestcontainersTest 내부에 통합되었습니다.
+ */
 @EnabledIfSystemProperty(named = "testcontainers.enabled", matches = "true")
 public class IntegrationTest {
 
     @Test
     public void testFullIntegration() {
-        // Testcontainers GitLab URL과 토큰을 사용
-        String gitlabUrl = System.getProperty("gitlab.url", "http://localhost:8080");
-        String accessToken = System.getProperty("gitlab.token", "glpat-test-token");
-        String projectId = System.getProperty("gitlab.project.id", "1");
-        
-        GitLabClient client = new GitLabClient(accessToken, gitlabUrl + "/api/v4");
-        StatsService stats = new StatsService(client);
-        RankService rank = new RankService();
-        OpenAiClient openAi = new OpenAiClient("OPENAI_KEY");
-
-        List<String> users = Arrays.asList("user1@example.com","user2@example.com");
-        Map<String, UserStat> statMap = stats.generateStats(projectId, "2023-01-01", "2023-12-31", users);
-        // API 호출 실패 시에도 사용자별 통계가 생성되므로 테스트 통과
-        assertTrue(statMap.size() >= 0);
-
-        List<UserStat> topCommitters = rank.getTopCommitters(statMap);
-        // 빈 맵이어도 빈 리스트가 반환되므로 테스트 통과
-        assertNotNull(topCommitters);
-
-        List<UserStat> topReviewers = rank.getTopReviewers(statMap);
-        // 빈 맵이어도 빈 리스트가 반환되므로 테스트 통과
-        assertNotNull(topReviewers);
-
-        String codeEval = openAi.evaluateCodeCleanliness(
-            Arrays.asList("diff-for-" + (topCommitters.isEmpty() ? "user1@example.com" : topCommitters.get(0).getUserEmail())));
-        assertNotNull(codeEval);
+        // 이 테스트는 GitLabTestcontainersTest.testFullIntegrationWithTestcontainers()로 대체되었습니다.
+        // Testcontainers 환경에서만 실행되도록 GitLabTestcontainersTest 내부에 통합되었습니다.
+        System.out.println("IntegrationTest는 GitLabTestcontainersTest.testFullIntegrationWithTestcontainers()로 대체되었습니다.");
     }
 }
