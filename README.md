@@ -17,6 +17,29 @@ GitLab API를 활용하여 사용자들의 커밋과 코드 리뷰 통계를 생
 - GitLab API 토큰
 - OpenAI API 키 (선택사항)
 
+## CI/CD 파이프라인
+
+이 프로젝트는 GitHub Actions를 사용한 자동화된 CI/CD 파이프라인이 설정되어 있습니다.
+
+### 파이프라인 기능
+
+- **자동 빌드**: main, develop 브랜치에 푸시하거나 PR 생성 시 자동 실행
+- **테스트 실행**: 모든 단위 테스트 자동 실행
+- **테스트 리포트**: Surefire 리포트 및 Maven Site 리포트 생성
+- **코드 커버리지**: JaCoCo를 통한 코드 커버리지 측정
+- **아티팩트 저장**: 
+  - 테스트 결과 리포트
+  - 코드 커버리지 리포트
+  - 빌드된 JAR 파일
+- **캐싱**: Maven 의존성 캐싱으로 빌드 속도 향상
+
+### 아티팩트 확인
+
+GitHub Actions 실행 후 다음 아티팩트를 다운로드할 수 있습니다:
+- `test-results`: 테스트 리포트 및 Maven Site 리포트
+- `code-coverage`: JaCoCo 코드 커버리지 리포트
+- `application-jar`: 빌드된 실행 가능한 JAR 파일
+
 ## 빌드 및 실행
 
 ### 1. 프로젝트 빌드
