@@ -1,0 +1,66 @@
+name: Testcontainers GitLab Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/test/java/com/example/vcsstatistics/GitLabTestcontainersTest.java'
+      - 'src/test/java/com/example/vcsstatistics/GitLabTestHelper.java'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/test/java/com/example/vcsstatistics/GitLabTestcontainersTest.java'
+      - 'src/test/java/com/example/vcsstatistics/GitLabTestHelper.java'
+
+jobs:
+  testcontainers-gitlab-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+        
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Run Testcontainers GitLab tests
+      run: |
+        mvn test -Dtest=GitLabTestcontainersTest
+        mvn surefire-report:report-only
+        
+    - name: Upload Testcontainers test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: testcontainers-test-results
+        path: |
+          target/surefire-reports/
+          target/surefire-report/
+        retention-days: 30
+        
+    - name: Testcontainers test summary
+      if: always()
+      run: |
+        echo "## Testcontainers GitLab Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -d "target/surefire-reports" ]; then
+          echo "### Testcontainers Test Reports:" >> $GITHUB_STEP_SUMMARY
+          find target/surefire-reports -name "*GitLabTestcontainersTest*" | while read file; do
+            echo "- $(basename "$file")" >> $GITHUB_STEP_SUMMARY
+          done
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🐳 GitLab Testcontainers 테스트가 완료되었습니다." >> $GITHUB_STEP_SUMMARY
