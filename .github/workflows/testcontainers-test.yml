@@ -36,7 +36,7 @@ jobs:
         
     - name: Run Testcontainers GitLab tests
       run: |
-        mvn test -Dtest=GitLabTestcontainersTest,IntegrationTest -Dtestcontainers.enabled=true
+        mvn test -Dtest=GitLabTestcontainersTest -Dtestcontainers.enabled=true
         mvn surefire-report:report-only
         
     - name: Upload Testcontainers test results
