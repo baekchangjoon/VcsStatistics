@@ -28,14 +28,13 @@ public class GitLabTestHelper {
     }
     
     public int createTestProject(String projectName) throws Exception {
-        String projectData = String.format("""
-                {
-                    "name": "%s",
-                    "description": "Test project for VCS Statistics",
-                    "visibility": "private",
-                    "initialize_with_readme": true
-                }
-                """, projectName);
+        String projectData = String.format(
+            "{\n" +
+            "    \"name\": \"%s\",\n" +
+            "    \"description\": \"Test project for VCS Statistics\",\n" +
+            "    \"visibility\": \"private\",\n" +
+            "    \"initialize_with_readme\": true\n" +
+            "}", projectName);
         
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(gitlabUrl + "/api/v4/projects"))
@@ -56,19 +55,18 @@ public class GitLabTestHelper {
     
     public void createTestCommits(int projectId, String userEmail) throws Exception {
         // 테스트용 커밋 생성
-        String commitData = String.format("""
-                {
-                    "branch": "main",
-                    "commit_message": "Test commit by %s",
-                    "actions": [
-                        {
-                            "action": "create",
-                            "file_path": "test-file.txt",
-                            "content": "Test content for commit"
-                        }
-                    ]
-                }
-                """, userEmail);
+        String commitData = String.format(
+            "{\n" +
+            "    \"branch\": \"main\",\n" +
+            "    \"commit_message\": \"Test commit by %s\",\n" +
+            "    \"actions\": [\n" +
+            "        {\n" +
+            "            \"action\": \"create\",\n" +
+            "            \"file_path\": \"test-file.txt\",\n" +
+            "            \"content\": \"Test content for commit\"\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}", userEmail);
         
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(gitlabUrl + "/api/v4/projects/" + projectId + "/repository/commits"))
@@ -81,14 +79,13 @@ public class GitLabTestHelper {
     }
     
     public int createTestMergeRequest(int projectId, String title, String sourceBranch, String targetBranch) throws Exception {
-        String mrData = String.format("""
-                {
-                    "source_branch": "%s",
-                    "target_branch": "%s",
-                    "title": "%s",
-                    "description": "Test merge request"
-                }
-                """, sourceBranch, targetBranch, title);
+        String mrData = String.format(
+            "{\n" +
+            "    \"source_branch\": \"%s\",\n" +
+            "    \"target_branch\": \"%s\",\n" +
+            "    \"title\": \"%s\",\n" +
+            "    \"description\": \"Test merge request\"\n" +
+            "}", sourceBranch, targetBranch, title);
         
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(gitlabUrl + "/api/v4/projects/" + projectId + "/merge_requests"))
@@ -108,11 +105,10 @@ public class GitLabTestHelper {
     }
     
     public void createTestReviewComment(int projectId, int mrIid, String comment) throws Exception {
-        String commentData = String.format("""
-                {
-                    "body": "%s"
-                }
-                """, comment);
+        String commentData = String.format(
+            "{\n" +
+            "    \"body\": \"%s\"\n" +
+            "}", comment);
         
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(gitlabUrl + "/api/v4/projects/" + projectId + "/merge_requests/" + mrIid + "/notes"))
@@ -141,12 +137,11 @@ public class GitLabTestHelper {
     }
     
     private void createBranch(int projectId, String branchName) throws Exception {
-        String branchData = String.format("""
-                {
-                    "branch": "%s",
-                    "ref": "main"
-                }
-                """, branchName);
+        String branchData = String.format(
+            "{\n" +
+            "    \"branch\": \"%s\",\n" +
+            "    \"ref\": \"main\"\n" +
+            "}", branchName);
         
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(gitlabUrl + "/api/v4/projects/" + projectId + "/repository/branches"))
